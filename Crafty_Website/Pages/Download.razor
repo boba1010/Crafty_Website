@@ -1,0 +1,375 @@
+﻿@page "/download"
+@using Crafty_Website.Components.Download
+
+<PageTitle>Download Crafty</PageTitle>
+
+<div class="download-page">
+    <DownloadHeroSection />
+    
+    <DownloadLatestReleaseSection />
+
+    <DownloadAvailableBuildsSection />
+
+    <DownloadWhatsIncludedSection />
+    
+    <DownloadRequirementsSection />
+
+    <DownloadPreviousReleasesSection />
+</div>
+
+
+<style>
+
+    .download-page {
+        background: #0b0f0d;
+        color: #fff;
+        min-height: 100vh;
+    }
+
+    /* Hero */
+
+    .download-hero {
+        border-bottom: 1px solid rgba(255,255,255,.07);
+        background: radial-gradient( circle at 70% 30%, rgba(25,135,84,.08), transparent 35% );
+    }
+
+    .download-eyebrow,
+    .section-label {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        color: #35a85f;
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .15em;
+    }
+
+    .download-eyebrow span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #35a85f;
+    }
+
+    .download-hero h1 {
+        margin-top: 1.5rem;
+        font-size: clamp(3.5rem, 7vw, 6rem);
+        font-weight: 800;
+        letter-spacing: -.055em;
+        line-height: .95;
+    }
+
+    .download-hero h1 span {
+        color: rgba(255,255,255,.35);
+    }
+
+    .download-hero p {
+        max-width: 650px;
+        margin-top: 1.5rem;
+        color: rgba(255,255,255,.5);
+        font-size: 1.15rem;
+        line-height: 1.8;
+    }
+
+
+    /* Sections */
+
+    .download-section {
+        padding: 6rem 0;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .section-title {
+        margin-top: .75rem;
+        font-size: clamp(2.3rem, 4vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -.045em;
+    }
+
+    .section-description {
+        max-width: 650px;
+        color: rgba(255,255,255,.45);
+        line-height: 1.8;
+        margin-top: 1rem;
+    }
+
+
+    /* Latest release */
+
+    .release-card {
+        margin-top: 2rem;
+        padding: 2rem;
+        border: 1px solid rgba(25,135,84,.25);
+        background: linear-gradient( 135deg, rgba(25,135,84,.07), rgba(255,255,255,.015) );
+    }
+
+    .release-main {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+    }
+
+    .release-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(25,135,84,.12);
+        color: #35a85f;
+        font-size: 1.5rem;
+    }
+
+    .release-status {
+        color: #35a85f;
+        font-size: .65rem;
+        font-weight: 800;
+        letter-spacing: .13em;
+    }
+
+    .release-main h2 {
+        margin: .25rem 0;
+        font-size: 1.5rem;
+        font-weight: 750;
+    }
+
+    .release-main p {
+        margin: 0;
+        color: rgba(255,255,255,.4);
+        font-size: .85rem;
+    }
+
+    .release-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        margin-top: 2rem;
+        padding: 1.25rem 0;
+        border-top: 1px solid rgba(255,255,255,.07);
+        border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .release-meta span,
+    .build-info span,
+    .requirement span {
+        display: block;
+        color: rgba(255,255,255,.3);
+        font-size: .65rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+    }
+
+    .release-meta strong {
+        display: block;
+        margin-top: .35rem;
+        font-size: .85rem;
+    }
+
+    .release-action {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .release-link {
+        color: rgba(255,255,255,.45);
+        text-decoration: none;
+        font-size: .8rem;
+    }
+
+    .release-link:hover {
+        color: #35a85f;
+    }
+
+
+    /* Builds */
+
+    .build-card {
+        height: 100%;
+        padding: 2rem;
+        border: 1px solid rgba(255,255,255,.08);
+        background: rgba(255,255,255,.02);
+    }
+
+    .build-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .build-icon {
+        color: #35a85f;
+        font-size: 1.5rem;
+    }
+
+    .build-badge {
+        padding: .3rem .55rem;
+        font-size: .6rem;
+        font-weight: 800;
+        letter-spacing: .08em;
+    }
+
+    .stable {
+        color: #35a85f;
+        background: rgba(25,135,84,.1);
+    }
+
+    .development {
+        color: #d7a84d;
+        background: rgba(215,168,77,.1);
+    }
+
+    .build-card h3 {
+        margin-top: 2rem;
+        font-size: 1.35rem;
+        font-weight: 750;
+    }
+
+    .build-card p {
+        color: rgba(255,255,255,.42);
+        font-size: .9rem;
+        line-height: 1.7;
+    }
+
+    .build-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+
+    /* Contents */
+
+    .contents-list {
+        border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .content-item {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .content-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(25,135,84,.1);
+        color: #35a85f;
+    }
+
+    .content-item h3 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .content-item p {
+        margin: .25rem 0 0;
+        color: rgba(255,255,255,.38);
+        font-size: .8rem;
+    }
+
+
+    /* Requirements */
+
+    .requirements {
+        border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .requirement {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .requirement strong {
+        font-size: .85rem;
+        text-align: right;
+    }
+
+
+    /* Releases */
+
+    .release-table {
+        border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .release-row {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1.5fr .5fr;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+        color: rgba(255,255,255,.5);
+        font-size: .8rem;
+    }
+
+    .release-row:last-child {
+        border-bottom: 0;
+    }
+
+    .release-header {
+        color: rgba(255,255,255,.25);
+        font-size: .65rem;
+        font-weight: 800;
+        letter-spacing: .08em;
+    }
+
+    .release-row strong {
+        color: #fff;
+    }
+
+    .release-row a {
+        color: #35a85f;
+        text-decoration: none;
+    }
+
+
+    @@media (max-width: 768px) {
+
+        .download-section {
+            padding: 4rem 0;
+        }
+
+        .release-meta {
+            gap: 1.5rem;
+        }
+
+        .release-action {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .release-row {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .release-header span:nth-child(3),
+        .release-header span:nth-child(4),
+        .release-row span:nth-child(3) {
+            display: none;
+        }
+
+        .requirement {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: .4rem;
+        }
+
+        .requirement strong {
+            text-align: left;
+        }
+    }
+
+</style>

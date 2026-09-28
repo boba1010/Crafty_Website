@@ -1,0 +1,327 @@
+﻿@page "/"
+@using Crafty_Website.Components.Home
+
+<PageTitle>Crafty — Build. Mod. Explore.</PageTitle>
+
+<div class="crafty-home">
+    <HomeHeroSection />
+
+    <HomeStatusSection />
+
+    <HomePlatformSection />
+
+    <HomeEngineSection />
+
+    <HomeSDKSection />
+
+    <HomeDevelopmentSection />
+
+    <HomeCTASection />
+</div>
+
+<style>
+
+    .crafty-home {
+        background: #0b0f0d;
+        color: #fff;
+    }
+
+    .hero {
+        min-height: 78vh;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+        background: radial-gradient( circle at 70% 30%, rgba(25,135,84,.09), transparent 35% );
+    }
+
+    .hero-title {
+        max-width: 950px;
+        font-size: clamp(3.5rem, 7vw, 7rem);
+        line-height: .94;
+        letter-spacing: -.055em;
+        font-weight: 800;
+    }
+
+        .hero-title span {
+            color: rgba(255,255,255,.38);
+        }
+
+    .hero-description {
+        max-width: 720px;
+        margin-top: 2rem;
+        color: rgba(255,255,255,.58);
+        font-size: 1.2rem;
+        line-height: 1.7;
+    }
+
+    .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        color: #35a85f;
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+    }
+
+        .eyebrow span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #35a85f;
+        }
+
+    .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        color: rgba(255,255,255,.4);
+        font-size: .8rem;
+    }
+
+        .hero-meta i {
+            color: #35a85f;
+            margin-right: .3rem;
+        }
+
+
+    .border-section {
+        border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .metric {
+        padding: 2rem 1.5rem;
+        border-right: 1px solid rgba(255,255,255,.07);
+    }
+
+    .metric strong {
+        display: block;
+        font-size: .95rem;
+        font-weight: 700;
+    }
+
+    .metric span {
+        display: block;
+        margin-top: .35rem;
+        color: rgba(255,255,255,.35);
+        font-size: .78rem;
+    }
+
+    .section {
+        padding: 8rem 0;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .section-title {
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        line-height: 1;
+        letter-spacing: -.045em;
+        font-weight: 800;
+    }
+
+    .section-title span {
+        color: #35a85f;
+    }
+
+    .section-description {
+        max-width: 680px;
+        margin-top: 1.5rem;
+        color: rgba(255,255,255,.48);
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    .platform-grid {
+        border-top: 1px solid rgba(255,255,255,.08);
+        border-left: 1px solid rgba(255,255,255,.08);
+    }
+
+    .platform-item {
+        height: 100%;
+        padding: 2rem;
+        border-right: 1px solid rgba(255,255,255,.08);
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        transition: background .2s ease;
+    }
+
+    .platform-item:hover {
+        background: rgba(25,135,84,.035);
+    }
+
+    .platform-number {
+        color: rgba(255,255,255,.25);
+        font-size: .7rem;
+        font-weight: 700;
+    }
+
+    .platform-icon {
+        display: block;
+        margin: 2rem 0 1.5rem;
+        color: #35a85f;
+        font-size: 1.5rem;
+    }
+
+    .platform-item h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .platform-item p {
+        margin: 0;
+        color: rgba(255,255,255,.4);
+        font-size: .9rem;
+        line-height: 1.7;
+    }
+
+    .engine-section {
+        background: rgba(255,255,255,.012);
+    }
+
+    .architecture {
+        padding: 1.5rem;
+        border: 1px solid rgba(255,255,255,.09);
+        background: #0e1310;
+    }
+
+    .architecture-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        color: rgba(255,255,255,.55);
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+    }
+
+    .status {
+        color: #35a85f;
+    }
+
+        .status i {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 5px;
+            border-radius: 50%;
+            background: #35a85f;
+        }
+
+    .architecture-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.2rem .5rem;
+        border-bottom: 1px solid rgba(255,255,255,.05);
+        color: rgba(255,255,255,.75);
+        font-size: .85rem;
+    }
+
+        .architecture-line i {
+            color: #35a85f;
+        }
+
+    .code-panel {
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.09);
+        background: #080b09;
+    }
+
+    .code-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: .8rem 1rem;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+        .code-header > span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.2);
+        }
+
+        .code-header label {
+            margin-left: auto;
+            color: rgba(255,255,255,.35);
+            font-size: .7rem;
+        }
+
+    .code-panel pre {
+        margin: 0;
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .code-panel code {
+        color: rgba(255,255,255,.75);
+        font-family: Consolas, monospace;
+        font-size: .85rem;
+        line-height: 1.8;
+    }
+
+    .keyword {
+        color: #72b7ff;
+    }
+
+    .comment {
+        color: rgba(255,255,255,.3);
+    }
+
+    .development-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 3rem;
+        padding: 3rem;
+        border: 1px solid rgba(255,255,255,.09);
+        background: rgba(255,255,255,.02);
+    }
+
+        .development-banner h2 {
+            font-size: 2rem;
+            font-weight: 750;
+        }
+
+        .development-banner p {
+            max-width: 700px;
+            margin: .75rem 0 0;
+            color: rgba(255,255,255,.45);
+            line-height: 1.7;
+        }
+
+    .final-section {
+        border-bottom: 0;
+        padding: 10rem 0;
+    }
+
+    .final-title {
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        font-weight: 800;
+        letter-spacing: -.05em;
+    }
+
+    @@media (max-width: 767px) {
+
+        .hero {
+            min-height: auto;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .metric {
+            border-right: 0;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+
+        .development-banner {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+</style>
