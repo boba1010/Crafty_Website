@@ -17,7 +17,7 @@ echo "==> Verifying .NET version:"
 dotnet --version
 
 echo "==> Installing WebAssembly toolchain workloads..."
-dotnet workload install wasm-tools --skip-manifest-update
+dotnet workload install wasm-tools
 
 echo "==> Compiling Blazor WASM App in Release Mode..."
 PROJECT_PATH="./Crafty_Website.csproj"
