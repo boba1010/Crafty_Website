@@ -20,5 +20,5 @@ echo "==> Installing WebAssembly toolchain workloads..."
 dotnet workload install wasm-tools --skip-manifest-update
 
 echo "==> Compiling Blazor WASM App in Release Mode..."
-PROJECT_PATH="./ReligiousQuizCompetition.Admin.Web.csproj"
+PROJECT_PATH="./Crafty_Website.csproj"
 dotnet publish "$PROJECT_PATH" -c Release
