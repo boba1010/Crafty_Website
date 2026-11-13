@@ -1,0 +1,141 @@
+<div class="docs-startup-page">
+
+    <div class="docs-eyebrow">ENGINE / RUNTIME FLOW</div>
+
+    <h1>
+        Startup &amp; <span class="docs-accent">game loop</span>
+    </h1>
+
+    <p class="docs-lead">
+        The executable receives a launch configuration, creates the window,
+        initializes game APIs, constructs a scene, registers systems, and
+        then updates and renders that scene.
+    </p>
+
+    <h2>Process entry point</h2>
+
+    <p>
+        <code>Crafty/Program.cs</code> expects a launch argument pair:
+        <code>--config-path &lt;path&gt;</code>. The JSON file is deserialized
+        into <code>GameLaunchConfigDto</code>, whose current documented
+        payload contains <code>SelectedWorldPath</code>.
+    </p>
+
+    <p>
+        The game registers GLFW windowing and input platforms, creates
+        <code>MainWindow</code>, and activates it.
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>LAUNCH CONFIGURATION</span>
+            <span>JSON</span>
+        </div>
+
+        <pre><code>{
+  "SelectedWorldPath": "C:\\Saves\\Example\\Example.world"
+}</code></pre>
+    </div>
+
+    <h2>MainWindow initialization</h2>
+
+    <p>
+        The <code>MainWindow</code> constructor calls its initialization
+        routine, creates a <code>WorldGenService</code> for the world
+        directory, initializes <code>GameAPIs</code>, creates the player
+        camera system, and subscribes to activation and focus events.
+    </p>
+
+    <p>
+        When the window is activated, it constructs a <code>GameWorld</code>
+        and an empty <code>Scene</code>. It then initializes the pause menu
+        and HUD, creates player, camera, and hand objects, loads the world,
+        connects the world's <code>BlockChanged</code> event to lighting
+        and mesh invalidation, registers systems, and creates the job system.
+    </p>
+
+    <h2>System registration order</h2>
+
+    <p>
+        Systems are appended to <code>Scene.Systems</code> and updated in
+        list order. The scene constructor inserts <code>HierarchySystem</code>
+        first.
+    </p>
+
+    <p>
+        <code>MainWindow</code> then registers world time, chunk streaming,
+        hand animation, player and movement systems, gravity and collision,
+        combat, damage, fall, death and respawn systems, inventory and
+        hotbar synchronization, block interaction, mesh updates, and
+        mob systems.
+    </p>
+
+    <div class="docs-callout docs-callout-info">
+        <i class="bi bi-info-circle"></i>
+
+        <div>
+            <strong>System order matters</strong>
+
+            <p>
+                A system sees the scene state left by systems that ran
+                before it. When changing registration order, verify which
+                systems produce state that later systems consume.
+            </p>
+        </div>
+    </div>
+
+    <h2>Per-frame execution</h2>
+
+    <p>
+        <code>GameWorld.Render(deltaTime)</code> iterates the registered
+        systems. If the game is paused, systems implementing
+        <code>IGameplaySystem</code> are skipped; ordinary
+        <code>ISystem</code> implementations still run.
+    </p>
+
+    <p>
+        After system updates, it finds the first object with a
+        <code>Camera</code> component and passes the scene and camera
+        to the renderer.
+    </p>
+
+    <h2>Game state and input</h2>
+
+    <p>
+        <code>GameStateManager</code> tracks <code>Paused</code>,
+        <code>Playing</code>, and <code>Inventory</code> states.
+        Escape toggles pause and resume while playing or paused.
+    </p>
+
+    <p>
+        Window focus loss pauses the game unless the inventory or death
+        state is active. The window switches between raw and normal
+        cursor modes when entering or leaving gameplay.
+    </p>
+
+    <div class="docs-callout">
+        <i class="bi bi-lightbulb"></i>
+
+        <div>
+            <strong>For engine contributors</strong>
+
+            <p>
+                When adding a system, decide whether it should continue
+                while paused. Implement <code>IGameplaySystem</code> for
+                simulation that must freeze with gameplay; implement
+                <code>ISystem</code> for work that should continue under
+                the current pause filter.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/ecs">
+            Entity Component System
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

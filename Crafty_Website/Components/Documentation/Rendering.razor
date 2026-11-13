@@ -1,0 +1,167 @@
+<div class="docs-rendering-page">
+
+    <div class="docs-eyebrow">ENGINE / GRAPHICS</div>
+
+    <h1>
+        Rendering <span class="docs-accent">pipeline</span>
+    </h1>
+
+    <p class="docs-lead">
+        The current rendering path lives in CraftyNative and submits
+        world, entity, sky, HUD, and UI work through Vulcan's graphics
+        abstractions.
+    </p>
+
+    <h2>Device and swapchain initialization</h2>
+
+    <p>
+        <code>CraftyNative.Rendering.CraftyNative.Initialize</code>
+        receives the native window and creates a graphics device through
+        <code>Vulcan.Vulcan.CreateDevice</code>.
+    </p>
+
+    <p>
+        It initializes the device, creates a swapchain and depth texture,
+        command queue and command buffer, then creates mesh/render
+        resources and initializes sky, HUD, UI, text, and sprite renderers.
+    </p>
+
+    <div class="docs-callout docs-callout-info">
+        <i class="bi bi-info-circle"></i>
+
+        <div>
+            <strong>Current graphics backend</strong>
+
+            <p>
+                The current implementation uses <code>Vulcan.DirectX</code>
+                and explicitly casts command buffer, swapchain, and texture
+                objects to D3D11-specific types to obtain render-target
+                and depth-stencil views. This is the implementation
+                currently checked in—not a claim that all graphics
+                backends are supported.
+            </p>
+        </div>
+    </div>
+
+    <h2>Frame sequence</h2>
+
+    <ol class="docs-steps">
+        <li>
+            <strong>Begin command buffer</strong>
+            <p>
+                Set viewport and scissor, clear color and depth targets.
+            </p>
+        </li>
+
+        <li>
+            <strong>Build camera matrices</strong>
+            <p>
+                Read the camera object's Transform and Camera components
+                and construct view/projection matrices.
+            </p>
+        </li>
+
+        <li>
+            <strong>Render environment</strong>
+            <p>
+                Draw the sky using camera position and view-projection data.
+            </p>
+        </li>
+
+        <li>
+            <strong>Opaque and cutout pass</strong>
+            <p>
+                Update world batches, draw opaque world sections, then
+                draw scene renderables.
+            </p>
+        </li>
+
+        <li>
+            <strong>Translucent pass</strong>
+            <p>
+                Draw translucent world sections far-to-near with
+                blending enabled and depth writes disabled.
+            </p>
+        </li>
+
+        <li>
+            <strong>HUD and UI</strong>
+            <p>
+                Render HUD, UI elements, text, sprites, and overlays.
+            </p>
+        </li>
+
+        <li>
+            <strong>Present</strong>
+            <p>
+                End the command buffer and present the swapchain.
+            </p>
+        </li>
+    </ol>
+
+    <h2>World batches and mesh data</h2>
+
+    <p>
+        World section meshes are managed through
+        <code>WorldMeshManager</code> and drawn by
+        <code>WorldBatchRenderer</code>.
+    </p>
+
+    <p>
+        Individual scene renderables are stored on the scene and drawn
+        with their Transform. The mesh renderer handles mesh draw calls
+        and resource release.
+    </p>
+
+    <h2>Lighting and environment</h2>
+
+    <p>
+        Sky, sun, and moon have dedicated environment renderers.
+        The runtime exposes daylight and moonlight values.
+    </p>
+
+    <p>
+        The world shader path uses per-vertex light multiplied by an
+        ambient value derived from those environment values. The README
+        describes separate opaque/cutout and translucent passes, with
+        translucent sections sorted from far to near.
+    </p>
+
+    <h2>Shader implementation</h2>
+
+    <p>
+        HLSL shader source is embedded in <code>CraftyNative.cs</code>
+        in this snapshot. Renderer resources and pipeline descriptions
+        are created in the runtime.
+    </p>
+
+    <p>
+        Vulcan provides the lower-level graphics device, buffers,
+        shader and pipeline abstractions.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-shield-lock"></i>
+
+        <div>
+            <strong>Rendering is not exposed by IModContext</strong>
+
+            <p>
+                The current mod context exposes only a logger, block
+                registry, item registry, and mob registry. It does not expose the
+                graphics device, command buffer, mesh renderer, or
+                render hooks. Treat these as engine internals.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/ui">
+            UI &amp; HUD
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

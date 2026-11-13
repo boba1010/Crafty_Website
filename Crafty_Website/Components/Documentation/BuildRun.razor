@@ -1,0 +1,73 @@
+<div class="docs-build-page">
+
+    <div class="docs-eyebrow">REFERENCE / DEVELOPMENT ENVIRONMENT</div>
+
+    <h1>Build &amp; <span class="docs-accent">run Crafty</span></h1>
+
+    <p class="docs-lead">
+        The repository targets Windows and .NET 10. A successful local build also requires the external Vulcan source tree referenced by the project files.
+    </p>
+
+    <h2>Prerequisites</h2>
+
+    <ul class="docs-list">
+        <li>.NET 10 SDK.</li>
+        <li>Windows development environment matching the current native windowing/graphics implementation.</li>
+        <li>
+            The Vulcan source tree. <code>CraftyNative.csproj</code> references a local path under a parent directory, and <code>Crafty.slnx</code> contains absolute <code>D:\My Programs\Vulcan</code> project paths. Adjust these paths to match your checkout.
+        </li>
+        <li>For Native AOT publishing, the required platform C++ toolchain.</li>
+    </ul>
+
+    <h2>Launch configuration</h2>
+
+    <p>
+        The game expects <code>Crafty.exe --config-path launch.json</code>. The launch JSON contains <code>SelectedWorldPath</code>, which points to the world file to open. Running without the required argument pair throws the missing-argument exception in Program.Main.
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>COMMAND LINE</span>
+            <span>WINDOWS</span>
+        </div>
+
+        <pre><code>Crafty.exe --config-path launch.json</code></pre>
+    </div>
+
+    <h2>Assets</h2>
+
+    <p>
+        The <code>Crafty.csproj</code> post-build target copies files under <code>Assets\</code> into the output directory. The game loads textures, fonts, and other content from that runtime asset tree.
+    </p>
+
+    <h2>Native AOT settings</h2>
+
+    <p>
+        The game project enables <code>PublishAot</code>, <code>IsAotCompatible</code>, trimming analyzers, invariant globalization, nullable reference types, and unsafe blocks. Launch configuration JSON uses a source-generated serialization context.
+    </p>
+
+    <h2>Known repository build issues</h2>
+
+    <ul class="docs-list">
+        <li>Vulcan project references point outside the repository.</li>
+        <li>The solution references a game project path that does not match the checked-in root-level csproj.</li>
+        <li><code>Crafty.InstancesManager</code> uses <code>Crafty.Auto</code> types not included in this repository or its project file.</li>
+        <li><code>Crafty.Testing</code> calls old WorldGenService signatures and is noted as out of date.</li>
+    </ul>
+
+    <h2>World generation test service</h2>
+
+    <p>
+        The README documents <code>IWorldGenService.GenerateWorld(worldDir, worldName, seed, progress)</code> as generating a 10 × 10 chunk area in parallel and reporting progress. The currently active terrain generator creates flat layers; do not expect biome/noise terrain from this snapshot.
+    </p>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/api">
+            API Reference &amp; Known Gaps
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

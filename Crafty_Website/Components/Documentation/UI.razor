@@ -1,0 +1,132 @@
+<div class="docs-ui-page">
+
+    <div class="docs-eyebrow">ENGINE / USER INTERFACE</div>
+
+    <h1>
+        UI framework <span class="docs-accent">&amp; HUD</span>
+    </h1>
+
+    <p class="docs-lead">
+        CraftyNative contains a retained-mode UI element tree and dedicated
+        HUD renderers. The interface is assembled in C# rather than
+        declared in XAML or HTML.
+    </p>
+
+    <h2>Retained-mode element tree</h2>
+
+    <p>
+        The UI framework has a measure, arrange, update, and draw cycle.
+        <code>UIElement</code> is the base abstraction and carries layout
+        and interaction state such as position, size, margin, padding,
+        alignment, visibility, mouse/hover flags, parent, and Tag.
+        Derived elements implement the layout and draw stages.
+    </p>
+
+    <h2>Core elements</h2>
+
+    <div class="docs-table-wrapper">
+        <table class="docs-table">
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Frame</code> / <code>Page</code></td>
+                    <td>A frame hosts a page; a page has a background, title, and content element.</td>
+                </tr>
+                <tr>
+                    <td><code>Grid</code></td>
+                    <td>Rows and columns with pixel, auto, or star sizing, spacing, and spans.</td>
+                </tr>
+                <tr>
+                    <td><code>Pane</code></td>
+                    <td>Vertical stack with spacing.</td>
+                </tr>
+                <tr>
+                    <td><code>TabView</code> / <code>TabItem</code></td>
+                    <td>Tab navigation with 3D mesh icons, hover tooltips, and SelectionChanged.</td>
+                </tr>
+                <tr>
+                    <td><code>ScrollView</code>, <code>Button</code></td>
+                    <td>Scrolling and clickable text controls.</td>
+                </tr>
+                <tr>
+                    <td><code>SpriteView</code> / <code>ModelView</code></td>
+                    <td>Sprite display and rotatable 3D mesh preview.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Rendering components</h2>
+
+    <p>
+        <code>UIRenderer</code>, <code>UITextRenderer</code>,
+        <code>SpriteRenderer</code>, and <code>UI3DModelsRenderer</code>
+        handle drawing. Text uses Roboto loaded through StbTrueTypeSharp.
+        Image loading uses StbImageSharp.
+    </p>
+
+    <h2>Inventory and hotbar</h2>
+
+    <p>
+        <code>HudInventory</code> owns a TabView, a hotbar SlotGrid,
+        a cursor/held slot, and survival/creative inventory pages
+        implementing <code>IInventoryLayout</code>. That interface
+        groups storage, armor, crafting slots, and the crafting result slot.
+    </p>
+
+    <p>
+        The inventory slot index space is flat: 0–8 hotbar, 9–35 storage,
+        36–39 armor, 40–43 crafting, and 44 crafting result. The creative
+        tab view is a scrollable 9 × 6 grid. <code>SlotInteraction</code>
+        handles pickup, placement, right-click splitting, and stacking up to 64.
+    </p>
+
+    <h2>UI to ECS synchronization</h2>
+
+    <p>
+        The player has Inventory and Hotbar components. When a UI slot changes,
+        <code>HudInventory.SlotChanged</code> raises a change that
+        <code>InventorySystem</code> queues and applies to the ECS on its update.
+        In the opposite direction, the system updates HUD slots from component
+        state. Resolver delegates map item/block IDs to item meshes and block IDs.
+    </p>
+
+    <h2>HUD pieces</h2>
+
+    <p>
+        The current HUD includes the nine-slot hotbar, heart display
+        (full/half/empty sprites), crosshair, pause menu, inventory pages,
+        and death screen. Pressing E toggles inventory and changes game
+        state/cursor mode.
+    </p>
+
+    <div class="docs-callout docs-callout-info">
+        <i class="bi bi-info-circle"></i>
+
+        <div>
+            <strong>Not a mod-facing UI API yet</strong>
+
+            <p>
+                The UI framework is part of CraftyNative. It is not surfaced
+                through the current <code>IModContext</code>. Do not imply
+                that third-party mods can register HUD widgets through a
+                stable public SDK API in this snapshot.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/sdk">
+            SDK Overview
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

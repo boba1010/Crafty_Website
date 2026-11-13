@@ -1,0 +1,184 @@
+<div class="docs-generation-page">
+
+    <div class="docs-eyebrow">ENGINE / ASYNC WORK</div>
+
+    <h1>
+        World generation <span class="docs-accent">&amp; jobs</span>
+    </h1>
+
+    <p class="docs-lead">
+        Chunk streaming, generation, lighting initialization, and mesh
+        building are staged through background jobs so the main update
+        loop does not perform every operation synchronously.
+    </p>
+
+    <h2>Streaming around the player</h2>
+
+    <p>
+        <code>ChunkStreamingSystem</code> observes the player's chunk
+        coordinate. When the player crosses a chunk boundary, it builds
+        a required set inside a circular radius based on
+        <code>WorldConfiguration.StreamDistance</code>.
+    </p>
+
+    <p>
+        Missing chunks are sorted by squared distance so nearer chunks
+        are queued first. The system caps concurrent loads and mesh
+        builds through <code>MaxConcurrentLoads</code> and
+        <code>MaxConcurrentMeshes</code>.
+    </p>
+
+    <h2>Chunk load sequence</h2>
+
+    <ol class="docs-steps">
+        <li>
+            <strong>Queue a load</strong>
+            <p>
+                The streaming system submits a <code>LoadChunkJob</code>
+                for a required coordinate.
+            </p>
+        </li>
+
+        <li>
+            <strong>Load or generate</strong>
+            <p>
+                The job checks for an existing chunk; otherwise
+                <code>ChunkLoader.Load</code> loads the saved chunk or
+                generates one and registers it with the world.
+            </p>
+        </li>
+
+        <li>
+            <strong>Initialize lighting</strong>
+            <p>
+                The load job initializes sky light for the chunk.
+            </p>
+        </li>
+
+        <li>
+            <strong>Publish completion</strong>
+            <p>
+                The job puts the completed chunk into a concurrent
+                queue, which the streaming system drains on its update.
+            </p>
+        </li>
+
+        <li>
+            <strong>Build mesh</strong>
+            <p>
+                The system queues a <code>BuildChunkMeshJob</code>
+                and tracks it with a <code>JobFence</code>.
+            </p>
+        </li>
+    </ol>
+
+    <h2>Mesh building</h2>
+
+    <p>
+        <code>BuildChunkMeshJob</code> iterates all 26 vertical section
+        layers and the 2 × 2 horizontal section positions. It calls
+        <code>MeshBuilder.BuildSectionMesh</code> and publishes the
+        built sections through <code>WorldMeshManager</code>.
+    </p>
+
+    <p>
+        Empty opaque vertex output is skipped by the current job
+        implementation.
+    </p>
+
+    <h2>Block mutation and dirty mesh updates</h2>
+
+    <p>
+        Breaking or placing a block calls <code>World.SetBlock</code>.
+        The <code>BlockChanged</code> event updates lighting and marks
+        mesh data dirty.
+    </p>
+
+    <p>
+        <code>WorldMeshUpdateSystem</code> sees dirty blocks and submits
+        a <code>WorldUpdateJob</code> to rebuild affected sections.
+    </p>
+
+    <h2>Job system model</h2>
+
+    <p>
+        The repository's architecture notes describe a worker pool sized
+        to <code>max(2, processor count - 1)</code>, consuming a priority
+        queue.
+    </p>
+
+    <p>
+        Jobs are submitted with a priority and optionally a
+        <code>JobFence</code>. A fence tracks completion so a system
+        can poll <code>IsComplete</code> or wait for the group of jobs.
+    </p>
+
+    <h2>Current terrain generator</h2>
+
+    <p>
+        The checked-in <code>ChunkGenerator</code> is a simple flat
+        generator:
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>GENERATED TERRAIN</span>
+            <span>Y LEVELS</span>
+        </div>
+
+        <div class="docs-terrain-levels">
+            <div class="docs-terrain-row docs-terrain-air">
+                <span>Above Y=64</span>
+                <strong>Air</strong>
+            </div>
+
+            <div class="docs-terrain-row docs-terrain-grass">
+                <span>Y=64</span>
+                <strong>Grass</strong>
+            </div>
+
+            <div class="docs-terrain-row docs-terrain-dirt">
+                <span>Y=61–63</span>
+                <strong>Dirt</strong>
+            </div>
+
+            <div class="docs-terrain-row docs-terrain-stone">
+                <span>Below Y=61</span>
+                <strong>Stone</strong>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        The seed and generation context are part of the interface, but
+        this current generator does not yet use noise or biome data to
+        create varied terrain.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-cone-striped"></i>
+
+        <div>
+            <strong>Generation pipeline is incomplete</strong>
+
+            <p>
+                Note that <code>TerrianGenerator</code>
+                throws <code>NotImplementedException</code>,
+                <code>ChunkGenerationPipeline.Generate</code> throws,
+                and noise/biome classes are not wired into the current
+                path. Do not document procedural terrain features as
+                shipped behavior yet.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/rendering">
+            Rendering Pipeline
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

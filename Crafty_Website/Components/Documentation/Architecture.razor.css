@@ -1,0 +1,383 @@
+.docs-architecture-page {
+    width: 100%;
+}
+
+/* Dependency diagram */
+
+.docs-architecture-page .docs-architecture {
+    position: relative;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: radial-gradient( ellipse at 50% 0%, rgba(53, 168, 95, .055), transparent 65% ), #0e1310;
+}
+
+.docs-architecture-page .docs-arch-node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    min-width: 0;
+    min-height: 105px;
+    padding: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, .09);
+    background: rgba(255, 255, 255, .018);
+    text-align: center;
+    transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.docs-architecture-page .docs-arch-node:hover {
+    border-color: rgba(53, 168, 95, .35);
+    background: rgba(25, 135, 84, .045);
+    transform: translateY(-2px);
+}
+
+.docs-architecture-page .docs-arch-node b {
+    color: rgba(255, 255, 255, .94);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+
+.docs-architecture-page .docs-arch-node small {
+    max-width: 260px;
+    color: rgba(255, 255, 255, .4);
+    font-size: .75rem;
+    line-height: 1.6;
+}
+
+.docs-architecture-page .docs-arch-label {
+    color: #45b96d;
+    font-size: .59rem;
+    font-weight: 850;
+    letter-spacing: .14em;
+}
+
+.docs-architecture-page .docs-arch-game {
+    border-color: rgba(53, 168, 95, .35);
+    background: rgba(25, 135, 84, .055);
+}
+
+.docs-architecture-page .docs-arch-game b {
+    font-size: 1.2rem;
+}
+
+.docs-architecture-page .docs-arch-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .15rem;
+    padding: .8rem;
+    color: #35a85f;
+}
+
+.docs-architecture-page .docs-arch-arrow i {
+    font-size: 1.1rem;
+}
+
+.docs-architecture-page .docs-arch-arrow small {
+    color: rgba(255, 255, 255, .3);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.docs-architecture-page .docs-arch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+}
+
+.docs-architecture-page .docs-arch-sdk {
+    border-color: rgba(53, 168, 95, .3);
+    background: rgba(25, 135, 84, .045);
+}
+
+/* Dependency explanation */
+
+.docs-architecture-page .docs-architecture-note {
+    margin: 1.5rem 0 3rem;
+}
+
+.docs-architecture-page .docs-architecture-note > i {
+    color: #45b96d;
+}
+
+/* Project layers */
+
+.docs-architecture-page .docs-layer-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    margin: 1.5rem 0 3rem;
+}
+
+.docs-architecture-page .docs-layer-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.35rem;
+    border: 1px solid rgba(255, 255, 255, .075);
+    background: linear-gradient( 120deg, rgba(255, 255, 255, .022), rgba(255, 255, 255, .008) );
+    transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.docs-architecture-page .docs-layer-card:hover {
+    border-color: rgba(53, 168, 95, .28);
+    background: rgba(25, 135, 84, .025);
+    transform: translateX(3px);
+}
+
+.docs-architecture-page .docs-layer-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgba(53, 168, 95, .17);
+    background: rgba(25, 135, 84, .1);
+    color: #45b96d;
+    font-size: 1.1rem;
+}
+
+.docs-architecture-page .docs-layer-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.docs-architecture-page .docs-layer-meta {
+    color: #45b96d;
+    font-size: .59rem;
+    font-weight: 850;
+    letter-spacing: .14em;
+    margin-bottom: .45rem;
+}
+
+.docs-architecture-page .docs-layer-body h3 {
+    color: rgba(255, 255, 255, .94);
+    font-size: 1rem;
+    font-weight: 750;
+    letter-spacing: -.02em;
+    margin: 0 0 .65rem;
+}
+
+.docs-architecture-page .docs-layer-body h3 span {
+    color: rgba(255, 255, 255, .38);
+    font-weight: 500;
+}
+
+.docs-architecture-page .docs-layer-body p {
+    color: rgba(255, 255, 255, .53);
+    font-size: .84rem;
+    line-height: 1.8;
+    margin: .4rem 0;
+}
+
+.docs-architecture-page .docs-layer-body code,
+.docs-architecture-page .docs-tech-item code {
+    color: #a9d8b5;
+    background: rgba(53, 168, 95, .09);
+    border: 1px solid rgba(53, 168, 95, .1);
+    border-radius: 3px;
+    padding: .1rem .3rem;
+    font-size: .9em;
+}
+
+/* Technology grid */
+
+.docs-architecture-page .docs-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+    margin: 1.5rem 0 2.5rem;
+}
+
+.docs-architecture-page .docs-tech-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    min-width: 0;
+    padding: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, .075);
+    background: rgba(255, 255, 255, .015);
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.docs-architecture-page .docs-tech-item:hover {
+    border-color: rgba(53, 168, 95, .28);
+    background: rgba(25, 135, 84, .025);
+}
+
+.docs-architecture-page .docs-tech-item > i {
+    flex-shrink: 0;
+    color: #45b96d;
+    font-size: 1.15rem;
+    margin-top: .1rem;
+}
+
+.docs-architecture-page .docs-tech-item > div {
+    min-width: 0;
+}
+
+.docs-architecture-page .docs-tech-item strong {
+    display: block;
+    color: rgba(255, 255, 255, .9);
+    font-size: .85rem;
+    font-weight: 750;
+}
+
+.docs-architecture-page .docs-tech-item p {
+    color: rgba(255, 255, 255, .43);
+    font-size: .78rem;
+    line-height: 1.7;
+    margin: .35rem 0 0;
+}
+
+
+.docs-architecture-page .docs-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin: 2.5rem 0;
+    padding: 1.25rem 1.4rem;
+    border: 1px solid rgba(53, 168, 95, .22);
+    border-left: 3px solid #35a85f;
+    background: rgba(25, 135, 84, .045);
+}
+
+.docs-architecture-page .docs-callout > i {
+    flex-shrink: 0;
+    color: #45b96d;
+    font-size: 1.15rem;
+    margin-top: .15rem;
+}
+
+.docs-architecture-page .docs-callout > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.docs-architecture-page .docs-callout strong {
+    display: block;
+    color: rgba(255, 255, 255, .9);
+    font-size: .88rem;
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.docs-architecture-page .docs-callout p {
+    color: rgba(255, 255, 255, .52);
+    font-size: .84rem;
+    line-height: 1.8;
+    margin: .45rem 0 0;
+}
+
+.docs-architecture-page .docs-callout code {
+    color: #a9d8b5;
+    background: rgba(53, 168, 95, .09);
+    border: 1px solid rgba(53, 168, 95, .1);
+    border-radius: 3px;
+    padding: .1rem .3rem;
+    font-size: .9em;
+}
+
+.docs-architecture-page .docs-callout a {
+    color: #45b96d;
+    text-decoration: none;
+}
+
+.docs-architecture-page .docs-callout a:hover {
+    color: #75d894;
+}
+
+/* Next page navigation */
+
+.docs-architecture-page .docs-next {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .018);
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.docs-architecture-page .docs-next:hover {
+    border-color: rgba(53, 168, 95, .35);
+    background: rgba(25, 135, 84, .035);
+}
+
+.docs-architecture-page .docs-next span {
+    color: rgba(255, 255, 255, .35);
+    font-size: .67rem;
+    font-weight: 850;
+    letter-spacing: .13em;
+}
+
+.docs-architecture-page .docs-next a {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    color: #45b96d;
+    font-size: .9rem;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.docs-architecture-page .docs-next a:hover {
+    color: #75d894;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .docs-architecture-page .docs-next {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .docs-architecture-page .docs-arch-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .docs-architecture-page .docs-tech-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .docs-architecture-page .docs-architecture {
+        padding: .8rem;
+    }
+
+    .docs-architecture-page .docs-layer-card {
+        gap: .85rem;
+        padding: 1rem;
+    }
+
+    .docs-architecture-page .docs-layer-icon {
+        width: 36px;
+        height: 36px;
+        font-size: .95rem;
+    }
+
+    .docs-architecture-page .docs-layer-body h3 span {
+        display: block;
+        margin-top: .2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docs-architecture-page *,
+    .docs-architecture-page *::before,
+    .docs-architecture-page *::after {
+        transition: none !important;
+    }
+}

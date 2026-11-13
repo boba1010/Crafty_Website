@@ -1,0 +1,18 @@
+﻿<div class="docs-code">
+
+    <div class="docs-code-header">
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <label>@Language</label>
+    </div>
+
+    <pre><code>@((MarkupString)Content)</code></pre>
+
+</div>
+
+@code {
+    [Parameter] public string Language { get; set; } = "Text";
+    [Parameter] public string Content { get; set; } = "";
+}

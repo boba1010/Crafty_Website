@@ -1,0 +1,179 @@
+<div class="docs-sdk-page">
+
+    <div class="docs-eyebrow">MODDING SDK / REAL CONTRACTS</div>
+
+    <h1>
+        The Crafty <span class="docs-accent">SDK</span>
+    </h1>
+
+    <p class="docs-lead">
+        The SDK is a separate .NET 10 project with public contracts.
+        This page describes what the checked-in interfaces actually
+        expose today—and what they do not.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+
+        <div>
+            <strong>Important: the SDK surface is not the same as a complete mod loader</strong>
+
+            <p>
+                <code>IMod</code> and content registry interfaces exist.
+                However, the game currently initializes its built-in MainMod
+                directly; there is no external assembly discovery/loading
+                pipeline in the checked-in code, and <code>Crafty.MDK</code>
+                is an empty placeholder.
+            </p>
+        </div>
+    </div>
+
+    <h2>Project characteristics</h2>
+
+    <p>
+        <code>Crafty.SDK.csproj</code> targets <code>net10.0</code>,
+        enables nullable reference types and implicit usings, uses the
+        latest language version, and allows unsafe blocks. The SDK
+        project itself has no project references.
+    </p>
+
+    <h2>Mod entry point: IMod</h2>
+
+    <p>
+        The interface is in namespace <code>Crafty.SDK</code> and
+        requires these members:
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>Crafty.SDK.IMod.cs</span>
+            <span>ACTUAL INTERFACE SHAPE</span>
+        </div>
+
+        <pre><code>
+public interface IMod
+{
+    string Id { get; }
+    string Name { get; }
+    string Version { get; }
+    string AssetsDirectory { get; }
+
+    void Initilaize(IModContext context);
+}
+</code></pre>
+    </div>
+
+    <p>
+        The method is spelled <code>Initilaize</code> in the source.
+        Implement that exact spelling when implementing this snapshot's
+        interface.
+    </p>
+
+    <h2>Mod context</h2>
+
+    <p>
+        <code>IModContext</code> currently exposes only three services:
+    </p>
+
+    <ul class="docs-list">
+        <li>
+            <code>ILogger Logger</code> — logging through
+            <code>Log(string message)</code>.
+        </li>
+        <li>
+            <code>IBlockRegistry Blocks</code> — block registration and lookup.
+        </li>
+        <li>
+            <code>IItemRegistry Items</code> — item registration and lookup.
+        </li>
+    </ul>
+
+    <p>
+        It does not currently expose a world instance, player service,
+        event bus, UI registration service, input API, renderer, or
+        general dependency injection container.
+    </p>
+
+    <h2>SDK namespaces</h2>
+
+    <div class="docs-table-wrapper">
+        <table class="docs-table">
+            <thead>
+                <tr>
+                    <th>Namespace</th>
+                    <th>Known public surface</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <code>Crafty.SDK</code>
+                    </td>
+                    <td>
+                        <code>IMod</code>, <code>IModContext</code>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <code>Crafty.SDK.Debugging</code>
+                    </td>
+                    <td>
+                        <code>ILogger</code>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <code>Crafty.SDK.Client</code>
+                    </td>
+                    <td>
+                        Block/item registry interfaces and categories, Item.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <code>Crafty.SDK.Client.Blocks</code>
+                    </td>
+                    <td>
+                        Block, BlockModel, BlockElement, BlockFace,
+                        properties, behavior, collision/selection shapes
+                        and state definition.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <code>Crafty.SDK.World</code>
+                    </td>
+                    <td>
+                        <code>IChunk</code>, <code>IChunkGenerator</code>,
+                        <code>ChunkGenerationContext</code>,
+                        <code>BlockPlacement</code>.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>How the game uses it right now</h2>
+
+    <p>
+        <code>GameAPIs.Initialize()</code> scans the <code>Assets</code>
+        directory, creates the block and item registries, constructs a
+        ModContext with the game logger and those registries, then
+        instantiates and initializes <code>Crafty.MainMod.MainMod</code>.
+        This is a built-in initialization path, not external mod discovery.
+    </p>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/content">
+            Register Blocks &amp; Items
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

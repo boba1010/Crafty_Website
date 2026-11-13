@@ -1,0 +1,103 @@
+<div class="docs-lifecycle-page">
+
+    <div class="docs-eyebrow">MODDING SDK / IMPLEMENTATION STATUS</div>
+
+    <h1>Mod loading: <span class="docs-accent">what works today</span></h1>
+
+    <p class="docs-lead">
+        This page is intentionally explicit about the difference between existing SDK contracts and a complete mod runtime. It prevents mod authors from following a workflow the repository does not implement yet.
+    </p>
+
+    <div class="docs-status-grid">
+
+        <div class="docs-status-item">
+            <span class="docs-status status-present">PRESENT</span>
+            <strong>SDK contracts</strong>
+            <p>
+                IMod, IModContext, logger, block and item registries, and world-generation interfaces exist.
+            </p>
+        </div>
+
+        <div class="docs-status-item">
+            <span class="docs-status status-present">PRESENT</span>
+            <strong>Built-in MainMod</strong>
+            <p>
+                The game creates and initializes its own content mod directly.
+            </p>
+        </div>
+
+        <div class="docs-status-item">
+            <span class="docs-status status-missing">NOT IMPLEMENTED</span>
+            <strong>External assembly loader</strong>
+            <p>
+                No external assembly discovery/loading pipeline is present in this snapshot.
+            </p>
+        </div>
+
+        <div class="docs-status-item">
+            <span class="docs-status status-missing">PLACEHOLDER</span>
+            <strong>Crafty.MDK</strong>
+            <p>
+                The MDK project is empty and does not yet provide a usable template.
+            </p>
+        </div>
+
+    </div>
+
+    <h2>Current initialization path</h2>
+
+    <p>
+        <code>GameAPIs.Initialize()</code> scans the game's Assets directory, creates <code>BlockRegistry</code> and <code>ItemRegistry</code>, builds a <code>ModContext</code> containing a logger and those registries, then constructs <code>MainMod</code> and calls <code>Initilaize</code>. The built-in mod registers the game's content.
+    </p>
+
+    <h2>What is not in the checked-in path</h2>
+
+    <ul class="docs-list">
+        <li>Scanning a mods directory for third-party assemblies.</li>
+        <li>Loading external mod assemblies and locating their IMod implementations.</li>
+        <li>Dependency ordering, version compatibility checks, or conflict resolution.</li>
+        <li>Mod isolation, unload, or hot reload.</li>
+        <li>A defined external mod package format or install location.</li>
+        <li>A working MDK template that generates a mod project.</li>
+    </ul>
+
+    <h2>About planned architecture notes</h2>
+
+    <p>
+        The repository README lists first-class modding, multithreaded loading, and hot reload among design principles, but its known-gaps section explicitly says the loader is not present in this code. The implementation status must take precedence over aspirational design notes when documenting what developers can use today.
+    </p>
+
+    <h2>What a future loader needs to define</h2>
+
+    <ul class="docs-list">
+        <li>Mod discovery and package/manifest format.</li>
+        <li>Assembly loading strategy and dependency resolution.</li>
+        <li>Initialization order and duplicate ID behavior.</li>
+        <li>Asset path resolution and content ownership.</li>
+        <li>Failure handling, logging, and compatibility rules.</li>
+        <li>Unload/reload semantics and resource cleanup.</li>
+        <li>Public SDK compatibility policy and supported extension points.</li>
+    </ul>
+
+    <div class="docs-callout docs-callout-info">
+        <i class="bi bi-info-circle"></i>
+
+        <div>
+            <strong>Practical guidance</strong>
+
+            <p>
+                You can study the built-in <code>MainMod</code> as an example of registering content against the SDK interfaces. You cannot yet follow a complete, supported workflow to install an independently compiled third-party mod into the game using this repository snapshot alone.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/build">
+            Build &amp; Run
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

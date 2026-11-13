@@ -1,0 +1,152 @@
+<div class="docs-overview">
+    <div class="docs-eyebrow">CRAFTY / ENGINE DOCUMENTATION</div>
+
+    <h1>
+        Understand the engine.
+        <br />
+        <span class="docs-accent">Build with its SDK.</span>
+    </h1>
+
+    <p class="docs-lead">
+        This documentation describes the Crafty implementation in the repository: its runtime, ECS, world storage, chunk pipeline, renderer, UI, and the public SDK contracts available to mod authors.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        <div>
+            <strong>Repository snapshot and implementation status</strong>
+            <p>
+                These pages are based on the repository source, not assumptions about planned features. In this snapshot, external mod assembly loading and the MDK are not implemented. The built-in content mod is initialized directly by the game. See
+                <a href="/docs/lifecycle">Mod Loading Status</a>
+                before planning a distributable mod.
+            </p>
+        </div>
+    </div>
+
+    <h2>What Crafty is made of</h2>
+
+    <p>
+        Crafty is a data-oriented voxel game written in C# on .NET 10. The repository contains the game, its custom runtime, the public SDK, and the world/chunk generation library. Vulcan is the low-level graphics foundation, but its source is maintained outside this repository and is referenced through machine-specific project paths.
+    </p>
+
+    <div class="docs-link-grid">
+        <a class="docs-link-card" href="/docs/architecture">
+            <span class="docs-card-icon">
+                <i class="bi bi-diagram-3"></i>
+            </span>
+            <div>
+                <strong>Architecture</strong>
+                <p>Project boundaries, dependencies, and the role of each layer.</p>
+            </div>
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+        <a class="docs-link-card" href="/docs/ecs">
+            <span class="docs-card-icon">
+                <i class="bi bi-boxes"></i>
+            </span>
+            <div>
+                <strong>ECS &amp; systems</strong>
+                <p>Entities, unmanaged components, component stores, and update order.</p>
+            </div>
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+        <a class="docs-link-card" href="/docs/world">
+            <span class="docs-card-icon">
+                <i class="bi bi-globe2"></i>
+            </span>
+            <div>
+                <strong>World storage</strong>
+                <p>Chunk layout, block representation, lighting, and save files.</p>
+            </div>
+            <i class="bi bi-arrow-up-right"></i>
+            </a>
+        <a class="docs-link-card" href="/docs/sdk">
+            <span class="docs-card-icon">
+                <i class="bi bi-puzzle"></i>
+            </span>
+            <div>
+                <strong>Modding SDK</strong>
+                <p>Real SDK interfaces, content registration, and current limitations.</p>
+            </div>
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+    </div>
+
+    <h2>Repository projects</h2>
+
+    <table class="docs-table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Responsibility in this snapshot</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <code>Crafty</code>
+                </td>
+                <td>The game executable: player, gameplay systems, HUD, content bootstrap, chunk jobs, and assets.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>CraftyNative</code>
+                </td>
+                <td>Runtime: ECS, scenes, input/window integration, rendering, UI framework, HUD widgets, sky, animation, and physics helpers.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Crafty.SDK</code>
+                </td>
+                <td>Public mod-facing contracts, including <code>IMod</code>, <code>IModContext</code>, block/item definitions, and world-generation interfaces.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Crafty.ChunkGeneration</code>
+                </td>
+                <td>World/chunk implementation, generation, and persistence code.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Crafty.GameManagement</code> / <code>Crafty.InstancesManager</code>
+                </td>
+                <td>Launcher-side service and instance-management libraries; parts remain stubs or incomplete.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Crafty.MDK</code>
+                </td>
+                <td>Placeholder project in this snapshot; it is not yet a working mod template.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code>Crafty.Testing</code>
+                </td>
+                <td>Console test harness; the repository README notes that its current calls are out of date.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>How to read these docs</h2>
+    <p>Engine pages explain code that exists. SDK pages describe public types that exist, and explicitly call out where a public contract is not yet connected to a runtime feature. Examples are written against the checked-in signatures; they are not promises of a complete external mod-loading workflow.</p>
+
+    <div class="docs-source-links">
+        <span>PRIMARY SOURCE</span>
+        <a href="https://github.com/boba1010/Crafty-Game-Engine/blob/main/README.md" target="_blank" rel="noopener">
+            Repository architecture notes
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+        <a href="https://github.com/boba1010/Crafty-Game-Engine" target="_blank" rel="noopener">
+            Browse source code
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+    </div>
+
+    <div class="docs-next">
+        <span>START HERE</span>
+        <a href="/docs/architecture">
+            Architecture
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

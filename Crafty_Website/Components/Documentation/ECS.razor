@@ -1,0 +1,161 @@
+<div class="docs-ecs-page">
+
+    <div class="docs-eyebrow">ENGINE / CRAFTYNATIVE</div>
+
+    <h1>
+        The <span class="docs-accent">Entity Component System</span>
+    </h1>
+
+    <p class="docs-lead">
+        Crafty's runtime scene stores objects as IDs, state as unmanaged
+        component structs, and behavior as ordered systems.
+    </p>
+
+    <h2>WorldObject and Scene</h2>
+
+    <p>
+        <code>WorldObject</code> is a wrapper around a <code>uint</code>
+        identifier. <code>Scene.CreateObject()</code> returns the next
+        identifier.
+    </p>
+
+    <p>
+        The scene owns component stores, renderables, parent relationships,
+        and an ordered <code>List&lt;ISystem&gt;</code>.
+    </p>
+
+    <h2>Components</h2>
+
+    <p>
+        Components implement <code>IComponent</code> and are constrained
+        as unmanaged structs by the scene's generic component APIs.
+        Game examples include <code>Player</code>, <code>Movement</code>,
+        <code>Transform</code>, <code>Camera</code>, <code>Inventory</code>,
+        and <code>Hotbar</code>.
+    </p>
+
+    <p>
+        Components are data; systems contain the logic that reads and
+        mutates them.
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>COMPONENT SHAPE</span>
+            <span>ILLUSTRATIVE PROJECT PATTERN</span>
+        </div>
+
+        <pre><code>public struct ExampleComponent : IComponent
+{
+    public float Value;
+}</code></pre>
+    </div>
+
+    <h2>ComponentStore&lt;T&gt;</h2>
+
+    <p>
+        Each component type gets a <code>ComponentStore&lt;T&gt;</code>.
+        In the current implementation it uses a dictionary keyed by entity
+        ID, a dense entity-ID list, and a dictionary mapping entity IDs
+        to their list positions.
+    </p>
+
+    <p>
+        Removal uses swap-with-last so the entity list can remove an item
+        without shifting every later element. <code>Get</code> returns
+        a reference into the dictionary value using
+        <code>CollectionsMarshal.GetValueRefOrNullRef</code>.
+    </p>
+
+    <h2>Scene component API</h2>
+
+    <div class="docs-table-wrapper">
+        <table class="docs-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><code>AddComponent&lt;T&gt;(obj, value)</code></td>
+                    <td>Add or replace the component for an object.</td>
+                </tr>
+
+                <tr>
+                    <td><code>GetComponent&lt;T&gt;(obj)</code></td>
+                    <td>Get a ref to the stored component value.</td>
+                </tr>
+
+                <tr>
+                    <td><code>HasComponent&lt;T&gt;(obj)</code></td>
+                    <td>Check whether the object has the component.</td>
+                </tr>
+
+                <tr>
+                    <td><code>RemoveComponent&lt;T&gt;(obj)</code></td>
+                    <td>Remove the component.</td>
+                </tr>
+
+                <tr>
+                    <td><code>GetEntitiesWith&lt;T&gt;()</code></td>
+                    <td>
+                        Enumerate objects that have a component of type T.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Systems and hierarchy</h2>
+
+    <p>
+        <code>ISystem.Update(ref Scene scene, double deltaTime)</code>
+        is the system contract. <code>IGameplaySystem</code> is a marker
+        interface used by <code>GameWorld</code> to skip gameplay systems
+        while paused.
+    </p>
+
+    <p>
+        <code>HierarchySystem</code> is added by the scene constructor
+        and is responsible for parent-depth ordering and child world
+        transforms. Parent relationships are held separately from
+        component stores.
+    </p>
+
+    <h2>Renderables</h2>
+
+    <p>
+        Renderable meshes are stored separately from components in the
+        scene's renderable dictionary. A renderable object is expected
+        to have a <code>Transform</code> component because the render
+        loop reads its transform before drawing it.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+
+        <div>
+            <strong>Important implementation detail</strong>
+
+            <p>
+                The component-store implementation returns refs into
+                dictionary storage. Avoid retaining component refs
+                across operations that may mutate the same store, and
+                follow the existing scene/system access patterns.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/world">
+            World &amp; Chunk Storage
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

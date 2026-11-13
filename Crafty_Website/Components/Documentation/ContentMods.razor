@@ -1,0 +1,146 @@
+<div class="docs-content-page">
+
+    <div class="docs-eyebrow">MODDING SDK / CONTENT DEFINITIONS</div>
+
+    <h1>Blocks <span class="docs-accent">&amp; items</span></h1>
+
+    <p class="docs-lead">
+        The most complete mod-facing capability in the current SDK is content definition through block and item registries. The built-in MainMod is the repository's reference implementation.
+    </p>
+
+    <h2>Block registry</h2>
+
+    <p>
+        <code>IBlockRegistry</code> supports <code>Register(BlockCategory, Block)</code>, lookup by numeric ID or string ID, <code>GetAllIds()</code>, and an <code>All</code> array. Categories are <code>Nature</code>, <code>Stone</code>, <code>Wood</code>, <code>Ore</code>, <code>Building</code>, <code>Decoration</code>, and <code>Technical</code>.
+    </p>
+
+    <h2>Block definition</h2>
+
+    <p>
+        A <code>Block</code> has a display name, string ID, properties, model, optional state definition, collision shape, selection shape, and optional <code>IBlockBehavior</code>. Block properties currently include Solid, Opaque, Transparent, Hardness, BlockResistance, RequireTool, LightLevel, Replacable, and Flammable.
+    </p>
+
+    <h2>Block model data</h2>
+
+    <p>
+        <code>BlockModel</code> contains a list of <code>BlockElement</code> records. Each element has minimum and maximum Vector3 bounds and a list of <code>BlockFace</code> records. Each face associates one of six directions (Top, Bottom, North, South, East, West) with a texture ID. This is geometry description data; it is not a mesh or GPU resource.
+    </p>
+
+    <h2>Register a block and matching item</h2>
+
+    <p>
+        The following example uses the actual public types and method names. It demonstrates the content-registration pattern, not external mod deployment—the current game does not yet load third-party assemblies.
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>EXAMPLE: MOD CONTENT REGISTRATION</span>
+            <span>BASED ON CURRENT SDK CONTRACTS</span>
+        </div>
+
+        <pre><code>using System.Numerics;
+using Crafty.SDK;
+using Crafty.SDK.Client;
+using Crafty.SDK.Client.Blocks;
+
+public sealed class ExampleMod : IMod
+{
+    public string Id =&gt; "example";
+    public string Name =&gt; "Example Content";
+    public string Version =&gt; "1.0.0";
+    public string AssetsDirectory =&gt; "Assets";
+
+    // Keep the spelling used by IMod in this repository.
+    public void Initilaize(IModContext context)
+    {
+        var model = new BlockModel
+        {
+            Elements =
+            [
+                new BlockElement(
+                    Vector3.Zero,
+                    Vector3.One,
+                    [
+                        new BlockFace(BlockFaceDirection.Top, "example.ruby"),
+                        new BlockFace(BlockFaceDirection.Bottom, "example.ruby"),
+                        new BlockFace(BlockFaceDirection.North, "example.ruby"),
+                        new BlockFace(BlockFaceDirection.South, "example.ruby"),
+                        new BlockFace(BlockFaceDirection.East, "example.ruby"),
+                        new BlockFace(BlockFaceDirection.West, "example.ruby")
+                    ])
+            ]
+        };
+
+        var block = new Block
+        {
+            Id = "example.ruby_block",
+            Name = "Ruby Block",
+            Model = model,
+            Properties = new BlockProperties
+            {
+                Solid = true,
+                Opaque = true,
+                Hardness = 2f
+            },
+            Collision = CollisionShape.FullCube,
+            Selection = SelectionShape.FullCube
+        };
+
+        context.Blocks.Register(BlockCategory.Decoration, block);
+        context.Items.Register(ItemCategory.Block, new Item
+        {
+            Name = "Ruby Block",
+            BlockId = "example.ruby_block"
+        });
+
+        context.Logger.Log("Registered Ruby Block");
+    }
+}</code></pre>
+    </div>
+
+    <h2>Item definition</h2>
+
+    <p>
+        <code>Item</code> has a Name, optional BlockId, MaxStackSize (default 64), optional ItemTexture, and HiddenItem. <code>ItemCategory</code> includes Block, Tool, Weapon, Armor, Food, Material, Utility, and Consumable. An item representing a placeable block connects to the block through its <code>BlockId</code>.
+    </p>
+
+    <h2>IDs and category ranges</h2>
+
+    <p>
+        The repository's current chunk generator contains the category base-ID mapping: Nature 0, Stone 5,000, Wood 15,000, Ore 20,000, Building 30,000, Decoration 40,000, and Technical 50,000. Treat this as the current implementation's mapping, not a permanent stable allocation protocol. The source notes block ID 0 is air.
+    </p>
+
+    <h2>Textures and assets</h2>
+
+    <p>
+        The built-in content mod uses texture identifiers derived from namespaced block IDs. The game scans its <code>Assets</code> directory at API initialization, and the project copies assets to the build output. For third-party mods, the SDK has an <code>AssetsDirectory</code> property, but the current repository does not include the external mod loader that would define how that directory is discovered, mounted, or resolved. Do not assume an unimplemented asset packaging convention.
+    </p>
+
+    <h2>Block behavior contract</h2>
+
+    <p>
+        <code>IBlockBehavior</code> defines <code>OnPlaced</code>, <code>OnBroken</code>, <code>OnNeighborChanged</code>, and <code>OnUse</code>, each receiving a <code>BlockContext</code>. The interface exists in the SDK. The current <code>IModContext</code> does not expose world access, and the source snapshot does not establish a complete third-party behavior execution pipeline. Treat these callbacks as declared API surface whose runtime integration needs verification.
+    </p>
+
+    <div class="docs-callout">
+        <i class="bi bi-exclamation-circle"></i>
+
+        <div>
+            <strong>Important distinction</strong>
+
+            <p>
+                Registering a block and item in a registry is not the same as having a complete end-user mod installation workflow. The first is represented in the code; external assembly discovery/loading is not implemented in this snapshot.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/generation-mods">
+            Chunk Generation API
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

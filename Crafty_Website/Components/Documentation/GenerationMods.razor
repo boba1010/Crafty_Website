@@ -1,0 +1,92 @@
+
+<div class="docs-generation-mods-page">
+
+    <div class="docs-eyebrow">MODDING SDK / WORLD GENERATION CONTRACTS</div>
+
+    <h1>Chunk generation <span class="docs-accent">API</span></h1>
+
+    <p class="docs-lead">
+        The SDK defines interfaces for chunk data and generation context. The current game generation path is narrower than a complete user-extensible generator system.
+    </p>
+
+    <h2>IChunk</h2>
+
+    <p>
+        <code>Crafty.SDK.World.IChunk</code> exposes chunk X/Z coordinates, IsModified, IsRuntimeModified, IsEmpty, block read/write methods, sky/block light reads, and a light setter. The concrete game chunk implements this interface.
+    </p>
+
+    <h2>BlockPlacement</h2>
+
+    <p>
+        <code>BlockPlacement</code> is a readonly struct with a uint block ID and byte state. It is the value returned by chunk block reads and accepted by chunk block writes.
+    </p>
+
+    <h2>IChunkGenerator</h2>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>Crafty.SDK.World.IChunkGenerator.cs</span>
+            <span>ACTUAL CONTRACT</span>
+        </div>
+
+        <pre><code>public interface IChunkGenerator
+{
+    IChunk Generate(in ChunkGenerationContext context);
+}</code></pre>
+    </div>
+
+    <p>
+        <code>ChunkGenerationContext</code> provides Seed, ChunkX, ChunkZ, MinY, and MaxY. The interface is a public contract, but the repository snapshot does not show a supported mod registration mechanism for replacing the game's active generator through <code>IModContext</code>.
+    </p>
+
+    <h2>Current built-in generator</h2>
+
+    <p>
+        The internal <code>Crafty.ChunkGeneration.World.ChunkGenerator</code> implements the interface. It creates a concrete 32 × 416 × 32 chunk and fills each column with stone below Y=61, dirt through Y=63, and grass at Y=64. It currently does not use the seed to produce varied terrain.
+    </p>
+
+    <h2>What is not wired yet</h2>
+
+    <ul class="docs-list">
+        <li>
+            <code>TerrianGenerator</code> currently throws <code>NotImplementedException</code>.
+        </li>
+        <li>
+            <code>ChunkGenerationPipeline.Generate</code> currently throws an exception.
+        </li>
+        <li>
+            Noise and biome generator classes are not wired into the active generation path.
+        </li>
+        <li>
+            The SDK context does not expose a generator registry or world-generation service.
+        </li>
+    </ul>
+
+    <h2>World generation service</h2>
+
+    <p>
+        <code>IWorldGenService.GenerateWorld(worldDir, worldName, seed, progress)</code> is a service that generates a 10 × 10 chunk area in parallel and reports progress. The checked-in service should be treated as game/project infrastructure rather than a mod API unless a future SDK version explicitly exposes it.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+
+        <div>
+            <strong>Do not promise custom generator installation yet</strong>
+
+            <p>
+                It is accurate to say that an <code>IChunkGenerator</code> interface exists. It is not accurate to claim that third-party mods can currently register and run their own generator through a supported loader.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/lifecycle">
+            Mod Loading Status
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

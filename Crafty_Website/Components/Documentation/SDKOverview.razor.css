@@ -1,0 +1,225 @@
+.docs-sdk-page {
+    width: 100%;
+}
+
+/* Section headings */
+
+.docs-sdk-page h2 {
+    margin-top: 2.8rem;
+}
+
+/* Code cards */
+
+.docs-sdk-page .docs-code-card {
+    margin: 1.5rem 0 2rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: #101612;
+}
+
+.docs-sdk-page .docs-code-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .8rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    background: rgba(255, 255, 255, .025);
+}
+
+.docs-sdk-page .docs-code-title span:first-child {
+    color: #45b96d;
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .12em;
+}
+
+.docs-sdk-page .docs-code-title span:last-child {
+    color: rgba(255, 255, 255, .35);
+    font-size: .65rem;
+    font-weight: 750;
+    letter-spacing: .1em;
+    text-align: right;
+}
+
+.docs-sdk-page .docs-code-card pre {
+    margin: 0;
+    padding: 1.25rem;
+    overflow-x: auto;
+    color: #d5e5d9;
+    font-size: .84rem;
+    line-height: 1.8;
+}
+
+.docs-sdk-page .docs-code-card code {
+    font-family: Consolas, "Cascadia Code", monospace;
+}
+
+/* SDK capability list */
+
+.docs-sdk-page .docs-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    margin: 1.25rem 0 1.8rem;
+    padding-left: 1.4rem;
+    color: rgba(255, 255, 255, .68);
+    font-size: .9rem;
+    line-height: 1.75;
+}
+
+.docs-sdk-page .docs-list li::marker {
+    color: #45b96d;
+}
+
+.docs-sdk-page .docs-list code {
+    color: #75d894;
+}
+
+/* Namespace table */
+
+.docs-sdk-page .docs-table-wrapper {
+    width: 100%;
+    margin: 1.5rem 0 2rem;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.docs-sdk-page .docs-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.docs-sdk-page .docs-table th {
+    padding: .9rem 1rem;
+    background: rgba(255, 255, 255, .035);
+    color: #45b96d;
+    font-size: .7rem;
+    font-weight: 850;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.docs-sdk-page .docs-table td {
+    padding: .9rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    color: rgba(255, 255, 255, .68);
+    font-size: .86rem;
+    line-height: 1.65;
+    vertical-align: top;
+}
+
+.docs-sdk-page .docs-table td:first-child {
+    white-space: nowrap;
+}
+
+.docs-sdk-page .docs-table code {
+    color: #75d894;
+    font-size: .82rem;
+}
+
+/* Callouts */
+
+.docs-sdk-page .docs-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin: 1.8rem 0;
+    padding: 1.2rem 1.35rem;
+    border: 1px solid rgba(53, 168, 95, .2);
+    border-left: 3px solid #35a85f;
+    background: rgba(25, 135, 84, .055);
+}
+
+.docs-sdk-page .docs-callout > i {
+    margin-top: .15rem;
+    color: #45b96d;
+    font-size: 1.1rem;
+}
+
+.docs-sdk-page .docs-callout strong {
+    display: block;
+    margin-bottom: .35rem;
+    color: #e8f4eb;
+    font-size: .9rem;
+    font-weight: 750;
+}
+
+.docs-sdk-page .docs-callout p {
+    margin: 0;
+    color: rgba(255, 255, 255, .62);
+    font-size: .88rem;
+    line-height: 1.75;
+}
+
+.docs-sdk-page .docs-callout code {
+    color: #75d894;
+}
+
+/* Warning variant */
+
+.docs-sdk-page .docs-callout-warning {
+    border-color: rgba(230, 170, 65, .2);
+    border-left-color: #d9a441;
+    background: rgba(217, 164, 65, .045);
+}
+
+.docs-sdk-page .docs-callout-warning > i {
+    color: #e4b75f;
+}
+
+/* Next page */
+
+.docs-sdk-page .docs-next {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.4rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .018);
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.docs-sdk-page .docs-next:hover {
+    border-color: rgba(53, 168, 95, .35);
+    background: rgba(25, 135, 84, .035);
+}
+
+.docs-sdk-page .docs-next span {
+    color: rgba(255, 255, 255, .35);
+    font-size: .67rem;
+    font-weight: 850;
+    letter-spacing: .13em;
+}
+
+.docs-sdk-page .docs-next a {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    color: #45b96d;
+    font-size: .9rem;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.docs-sdk-page .docs-next a:hover {
+    color: #75d894;
+}
+
+/* Responsive layout */
+
+@media (max-width: 600px) {
+    .docs-sdk-page .docs-table th,
+    .docs-sdk-page .docs-table td {
+        padding: .75rem;
+    }
+
+    .docs-sdk-page .docs-next {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

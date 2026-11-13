@@ -1,0 +1,49 @@
+/* Code */
+
+.docs-code {
+    margin: 2rem 0;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #080b09;
+}
+
+.docs-code-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: .7rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.docs-code-header > span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.18);
+}
+
+.docs-code-header label {
+    margin-left: auto;
+    color: rgba(255,255,255,.3);
+    font-size: .7rem;
+}
+
+.docs-code pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.docs-code code {
+    color: rgba(255,255,255,.75);
+    font-family: Consolas, monospace;
+    font-size: .85rem;
+    line-height: 1.8;
+}
+
+::deep .keyword {
+    color: #72b7ff;
+}
+
+::deep .comment {
+    color: rgba(255,255,255,.3);
+}

@@ -1,0 +1,157 @@
+<div class="docs-api-reference-page">
+    <div class="docs-eyebrow">REFERENCE / SOURCE MAP</div>
+
+    <h1>
+        API reference <span class="docs-accent">&amp; known gaps</span>
+    </h1>
+
+    <p class="docs-lead">
+        The source repository is the authoritative reference for exact signatures.
+        This page links the key implementation areas and records limitations that
+        materially affect developers.
+    </p>
+
+    <h2>Public SDK source</h2>
+
+    <div class="docs-table-wrapper">
+        <table class="docs-table">
+            <thead>
+                <tr>
+                    <th>API</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>IMod</code>, <code>IModContext</code></td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty.SDK"
+                           target="_blank" rel="noopener">Crafty.SDK</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Block/item registry contracts</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty.SDK/Client"
+                           target="_blank" rel="noopener">Crafty.SDK/Client</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Block model, behavior, shapes, properties</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty.SDK/Client/Blocks"
+                           target="_blank" rel="noopener">Crafty.SDK/Client/Blocks</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Chunk and generation interfaces</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty.SDK/World"
+                           target="_blank" rel="noopener">Crafty.SDK/World</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Runtime ECS and scene</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/CraftyNative"
+                           target="_blank" rel="noopener">CraftyNative</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Game systems and bootstrap</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty"
+                           target="_blank" rel="noopener">Crafty</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>World/chunk implementation</td>
+                    <td>
+                        <a href="https://github.com/boba1010/Crafty-Game-Engine/tree/main/Crafty.ChunkGeneration"
+                           target="_blank" rel="noopener">Crafty.ChunkGeneration</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Known gaps in this repository snapshot</h2>
+
+    <ul class="docs-list">
+        <li>
+            External mod assembly loading is not implemented; the game directly
+            initializes its built-in MainMod.
+        </li>
+        <li>
+            <code>Crafty.MDK</code> is an empty placeholder project.
+        </li>
+        <li>
+            Block behavior callbacks exist as SDK declarations, but a complete
+            third-party behavior execution path is not established by the current
+            context/loader.
+        </li>
+        <li>
+            <code>IChunkGenerator</code> exists, but there is no generator
+            registration service exposed through IModContext.
+        </li>
+        <li>
+            Terrain generation is currently flat; terrain pipeline/noise/biome
+            components are incomplete.
+        </li>
+        <li>
+            CombatSystem and DamageSystem are empty stubs in the documented
+            snapshot; several related component types currently hold data only.
+        </li>
+        <li>
+            Launcher management libraries are incomplete; some service interfaces
+            are empty or contain stubs.
+        </li>
+        <li>
+            Vulcan source is external to this repository and local project
+            references need adjustment.
+        </li>
+    </ul>
+
+    <h2>Compatibility guidance</h2>
+
+    <p>
+        When documenting or building against the SDK, use the exact source version
+        that matches the game build. Do not invent a NuGet package ID, manifest
+        format, mod folder, lifecycle method, or API signature. If a contract exists
+        but the game does not invoke it, document it as declared-but-not-integrated
+        rather than supported behavior.
+    </p>
+
+    <h2>Source of truth</h2>
+
+    <p>
+        These docs are based on the repository's default branch and its README
+        architecture notes. The README itself records a snapshot dated October 16,
+        2026. For future releases, verify each page against the corresponding
+        source revision and update version-specific statements.
+    </p>
+
+    <div class="docs-source-links">
+        <span>OPEN THE SOURCE</span>
+
+        <a href="https://github.com/boba1010/Crafty-Game-Engine"
+           target="_blank" rel="noopener">
+            boba1010 / Crafty-Game-Engine
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+
+        <a href="https://github.com/boba1010/Crafty-Game-Engine/blob/main/README.md"
+           target="_blank" rel="noopener">
+            Repository README
+            <i class="bi bi-arrow-up-right"></i>
+        </a>
+    </div>
+
+    <div class="docs-next">
+        <span>BACK TO START</span>
+        <a href="/docs/overview">
+            Documentation Overview
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

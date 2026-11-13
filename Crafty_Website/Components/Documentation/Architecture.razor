@@ -1,0 +1,274 @@
+<div class="docs-architecture-page">
+
+    <div class="docs-eyebrow">
+        ENGINE / PROJECT STRUCTURE
+    </div>
+
+    <h1>
+        Project <span class="docs-accent">architecture</span>
+    </h1>
+
+    <p class="docs-lead">
+        Crafty is a layered application, not a general-purpose engine
+        with a game built on top. The runtime is intentionally shaped
+        around the needs of this voxel game.
+    </p>
+
+    <h2>Project dependency map</h2>
+
+    <div class="docs-architecture">
+        <div class="docs-arch-node docs-arch-game">
+            <span class="docs-arch-label">APPLICATION</span>
+            <b>Crafty</b>
+            <small>Game executable · gameplay, content, player, assets</small>
+        </div>
+
+        <div class="docs-arch-arrow">
+            <i class="bi bi-arrow-down"></i>
+            <small>references</small>
+        </div>
+
+        <div class="docs-arch-grid">
+            <div class="docs-arch-node">
+                <span class="docs-arch-label">RUNTIME</span>
+                <b>CraftyNative</b>
+                <small>Runtime, ECS, rendering, UI</small>
+            </div>
+
+            <div class="docs-arch-node">
+                <span class="docs-arch-label">PUBLIC API</span>
+                <b>Crafty.SDK</b>
+                <small>Public mod contracts</small>
+            </div>
+
+            <div class="docs-arch-node">
+                <span class="docs-arch-label">WORLD SYSTEMS</span>
+                <b>Crafty.ChunkGeneration</b>
+                <small>World and chunk generation</small>
+            </div>
+        </div>
+
+        <div class="docs-arch-arrow">
+            <i class="bi bi-arrow-down"></i>
+            <small>graphics dependency</small>
+        </div>
+
+        <div class="docs-arch-node docs-arch-sdk">
+            <span class="docs-arch-label">GRAPHICS FOUNDATION</span>
+            <b>Vulcan</b>
+            <small>
+                Low-level graphics device, buffers, shaders, and pipelines
+                · external source tree
+            </small>
+        </div>
+    </div>
+
+    <div class="docs-callout docs-architecture-note">
+        <i class="bi bi-diagram-3"></i>
+        <div>
+            <strong>Dependency direction matters</strong>
+            <p>
+                <code>Crafty.SDK</code> has no project references.
+                <code>Crafty.ChunkGeneration</code> references the SDK;
+                <code>CraftyNative</code> references the chunk-generation
+                project and Vulcan; and the game references the runtime,
+                SDK, and chunk-generation library.
+            </p>
+        </div>
+    </div>
+
+    <h2>What each layer owns</h2>
+
+    <p>
+        Each project has a distinct responsibility. Understanding these
+        boundaries is important when navigating the source or deciding
+        which APIs should be used by external extensions.
+    </p>
+
+    <div class="docs-layer-list">
+
+        <article class="docs-layer-card">
+            <div class="docs-layer-icon">
+                <i class="bi bi-controller"></i>
+            </div>
+            <div class="docs-layer-body">
+                <div class="docs-layer-meta">GAME APPLICATION</div>
+                <h3>Crafty <span>— game-specific behavior</span></h3>
+                <p>
+                    The game project contains components such as
+                    <code>Player</code>, <code>Movement</code>,
+                    <code>Inventory</code>, <code>Hotbar</code>, and
+                    combat-related data.
+                </p>
+                <p>
+                    Its systems implement player movement, collision,
+                    block interaction, inventory synchronization, time
+                    of day, chunk streaming, lighting updates, and mesh
+                    rebuild scheduling. The built-in content mod is
+                    under <code>Crafty/MainMod</code>.
+                </p>
+            </div>
+        </article>
+
+        <article class="docs-layer-card">
+            <div class="docs-layer-icon">
+                <i class="bi bi-cpu"></i>
+            </div>
+            <div class="docs-layer-body">
+                <div class="docs-layer-meta">ENGINE RUNTIME</div>
+                <h3>CraftyNative <span>— runtime services</span></h3>
+                <p>
+                    The runtime provides <code>Scene</code>, component
+                    stores, system interfaces, hierarchy handling,
+                    window/input integration, and a job system.
+                </p>
+                <p>
+                    It also contains 3D mesh and world-rendering helpers,
+                    the retained-mode UI tree, HUD renderers, sky
+                    rendering, and animation helpers.
+                </p>
+            </div>
+        </article>
+
+        <article class="docs-layer-card">
+            <div class="docs-layer-icon">
+                <i class="bi bi-puzzle"></i>
+            </div>
+            <div class="docs-layer-body">
+                <div class="docs-layer-meta">PUBLIC EXTENSION API</div>
+                <h3>Crafty.SDK <span>— extension contracts</span></h3>
+                <p>
+                    The SDK defines the mod entry-point contract and
+                    context, content registries, block models,
+                    properties and behaviors, items, and
+                    world-generation interfaces.
+                </p>
+                <p>
+                    It is separate from the private game and runtime
+                    implementation.
+                </p>
+            </div>
+        </article>
+
+        <article class="docs-layer-card">
+            <div class="docs-layer-icon">
+                <i class="bi bi-globe2"></i>
+            </div>
+            <div class="docs-layer-body">
+                <div class="docs-layer-meta">WORLD IMPLEMENTATION</div>
+                <h3>Crafty.ChunkGeneration <span>— world implementation</span></h3>
+                <p>
+                    This project implements <code>World</code>,
+                    <code>Chunk</code>, world-generation services,
+                    chunk loading, and persistence.
+                </p>
+                <p>
+                    The concrete <code>Chunk</code> type is in this
+                    library; the SDK exposes the <code>IChunk</code>
+                    contract.
+                </p>
+            </div>
+        </article>
+
+        <article class="docs-layer-card">
+            <div class="docs-layer-icon">
+                <i class="bi bi-gpu-card"></i>
+            </div>
+            <div class="docs-layer-body">
+                <div class="docs-layer-meta">GRAPHICS BACKEND</div>
+                <h3>Vulcan <span>— graphics foundation</span></h3>
+                <p>
+                    The renderer uses Vulcan abstractions and the
+                    DirectX backend. The checked-in runtime code
+                    creates a graphics device through
+                    <code>Vulcan.Vulcan.CreateDevice</code> and uses
+                    D3D11-specific command-buffer and swapchain types.
+                </p>
+                <p>
+                    Vulcan is not included in this repository checkout
+                    and the solution references an external local path.
+                </p>
+            </div>
+        </article>
+
+    </div>
+
+    <h2>Technology and build characteristics</h2>
+
+    <p>
+        The projects share a modern .NET toolchain, but their build
+        settings and native integration requirements differ.
+    </p>
+
+    <div class="docs-tech-grid">
+
+        <div class="docs-tech-item">
+            <i class="bi bi-code-slash"></i>
+            <div>
+                <strong>.NET 10</strong>
+                <p>
+                    C# projects with nullable reference types and
+                    implicit usings.
+                </p>
+            </div>
+        </div>
+
+        <div class="docs-tech-item">
+            <i class="bi bi-lightning-charge"></i>
+            <div>
+                <strong>Native AOT</strong>
+                <p>
+                    <code>Crafty</code> enables Native AOT publishing,
+                    AOT compatibility analysis, trimming analysis,
+                    and unsafe code.
+                </p>
+            </div>
+        </div>
+
+        <div class="docs-tech-item">
+            <i class="bi bi-memory"></i>
+            <div>
+                <strong>Low-level runtime</strong>
+                <p>
+                    <code>CraftyNative</code> allows unsafe code and
+                    uses StbImageSharp and StbTrueTypeSharp for
+                    image and font loading.
+                </p>
+            </div>
+        </div>
+
+        <div class="docs-tech-item">
+            <i class="bi bi-window-desktop"></i>
+            <div>
+                <strong>Windowing and input</strong>
+                <p>
+                    The game uses Silk.NET input/windowing with
+                    GLFW and SDL packages.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="docs-callout docs-architecture-note">
+        <i class="bi bi-info-circle"></i>
+        <div>
+            <strong>Do not confuse project boundaries with mod boundaries</strong>
+            <p>
+                A project reference in the solution does not automatically
+                mean its types are public mod APIs. For mods, depend on
+                documented SDK contracts rather than private
+                <code>Crafty</code> or <code>CraftyNative</code> classes.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+        <a href="/docs/startup">
+            Startup &amp; Game Loop
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>

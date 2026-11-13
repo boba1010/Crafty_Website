@@ -1,0 +1,176 @@
+<div class="docs-world-page">
+
+    <div class="docs-eyebrow">ENGINE / WORLD DATA</div>
+
+    <h1>
+        World &amp; <span class="docs-accent">chunk storage</span>
+    </h1>
+
+    <p class="docs-lead">
+        The current world implementation stores chunks by horizontal
+        chunk coordinate and represents block and light data in flat arrays.
+    </p>
+
+    <h2>Chunk dimensions</h2>
+
+    <div class="docs-stat-grid">
+        <div>
+            <strong>32</strong>
+            <span>Blocks along X</span>
+        </div>
+
+        <div>
+            <strong>32</strong>
+            <span>Blocks along Z</span>
+        </div>
+
+        <div>
+            <strong>416</strong>
+            <span>Blocks along Y</span>
+        </div>
+
+        <div>
+            <strong>16</strong>
+            <span>Blocks per mesh section height</span>
+        </div>
+    </div>
+
+    <p>
+        A concrete <code>Crafty.ChunkGeneration.World.Chunk</code> has
+        <code>Size = 32</code>, <code>Height = 416</code>, and
+        <code>Volume = Size × Size × Height</code>.
+    </p>
+
+    <p>
+        The mesh pipeline uses 26 vertical sections, each split into a
+        2 × 2 grid horizontally (four 16 × 16 × 16 sections per vertical layer).
+    </p>
+
+    <h2>Block representation</h2>
+
+    <p>
+        The SDK defines <code>BlockPlacement</code> as a readonly value
+        containing a <code>uint Id</code> and a <code>byte State</code>.
+        A chunk stores a flat <code>BlockPlacement[]</code>.
+        The current index calculation is:
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>CHUNK INDEX</span>
+            <span>FROM Chunk.GetIndex</span>
+        </div>
+
+        <pre><code>index = x * (Size * Height) + z * Height + y;</code></pre>
+    </div>
+
+    <p>
+        In other words, Y is the contiguous inner dimension, Z is the
+        next dimension, and X is the outer dimension. Coordinates passed
+        to the chunk's local block methods are chunk-local; the
+        <code>World</code> class maps world X/Z coordinates to chunk
+        coordinates and local coordinates.
+    </p>
+
+    <h2>World access and block changes</h2>
+
+    <p>
+        <code>World</code> stores loaded chunks in a
+        <code>ConcurrentDictionary&lt;(int X, int Z), IChunk&gt;</code>.
+        <code>GetBlock</code> returns the default placement if the
+        requested chunk is not loaded.
+    </p>
+
+    <p>
+        <code>SetBlock</code> returns without changing anything if the
+        chunk is not loaded; otherwise it writes the placement, marks
+        the chunk modified, and raises <code>BlockChanged</code> with
+        old and new block IDs.
+    </p>
+
+    <p>
+        <code>MainWindow</code> subscribes to <code>BlockChanged</code>.
+        The handler updates sky lighting and marks the corresponding
+        world mesh block dirty so a later update job can rebuild
+        affected geometry.
+    </p>
+
+    <h2>Lighting storage</h2>
+
+    <p>
+        Each chunk has one byte of light data per block. The upper
+        four bits hold sky light and the lower four bits hold block
+        light.
+    </p>
+
+    <div class="docs-code-card">
+        <div class="docs-code-title">
+            <span>LIGHT BYTE LAYOUT</span>
+            <span>4 BITS + 4 BITS</span>
+        </div>
+
+        <div class="docs-light-layout">
+            <div class="docs-light-part docs-light-sky">
+                <strong>SKY LIGHT</strong>
+                <span>Upper 4 bits</span>
+            </div>
+
+            <div class="docs-light-part docs-light-block">
+                <strong>BLOCK LIGHT</strong>
+                <span>Lower 4 bits</span>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        <code>GetSkyLight</code>, <code>GetBlockLight</code>, and
+        <code>SetLight</code> expose the nibble representation;
+        values are clamped to 0–15.
+    </p>
+
+    <h2>Persistence</h2>
+
+    <p>
+        A world is stored as a directory containing a
+        <code>&lt;name&gt;.world</code> file and a <code>chunks</code>
+        directory.
+    </p>
+
+    <p>
+        The world file is Deflate-compressed and contains the name and
+        64-bit seed. Chunk files are also Deflate-compressed and store
+        block count, modification state, and each block's uint ID plus
+        byte state.
+    </p>
+
+    <p>
+        Missing chunks are generated on demand and saved. On quit,
+        modified chunks are saved and unchanged chunk files are deleted
+        by the current save workflow.
+    </p>
+
+    <div class="docs-callout docs-callout-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+
+        <div>
+            <strong>Do not hard-code storage assumptions into mods</strong>
+
+            <p>
+                The flat-array layout and file format are implementation
+                details of this repository snapshot. Use SDK interfaces
+                where available; direct access to the concrete chunk
+                implementation couples code to the current storage format.
+            </p>
+        </div>
+    </div>
+
+    <div class="docs-next">
+        <span>NEXT</span>
+
+        <a href="/docs/generation">
+            World Generation &amp; Jobs
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+</div>
